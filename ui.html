@@ -1,0 +1,42 @@
+<html>
+
+<head>
+  <style>
+    select,
+    pre {
+      outline: none;
+      background-color: whitesmoke;
+      margin: 5% 2%;
+      padding: 2% 3%;
+      color: black;
+      font-size: 0.85em;
+      font-family: 'Roboto', sans-serif;
+      border: #787878 1px solid;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <select id="select">
+    <option value="wa" selected>WhatsApp</option>
+    <option value="bc">BlipChat</option>
+  </select>
+
+  <pre id="text"></pre>
+
+  <script>
+    document.getElementById("select").onchange = (event) => {
+      console.log(event.target.value);
+      parent.postMessage({ pluginMessage: { select: event.target.value } }, '*');
+    }
+
+    onmessage = (msg) => {
+      console.log("text");
+      document.getElementById("text").innerHTML = msg.data.pluginMessage.text;
+    };
+  </script>
+
+</body>
+
+</html>
