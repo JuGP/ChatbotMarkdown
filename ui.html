@@ -27,12 +27,10 @@
 
   <script>
     document.getElementById("select").onchange = (event) => {
-      console.log(event.target.value);
       parent.postMessage({ pluginMessage: { select: event.target.value } }, '*');
     }
 
     onmessage = (msg) => {
-      console.log("text");
       document.getElementById("text").innerHTML = msg.data.pluginMessage.text;
     };
   </script>

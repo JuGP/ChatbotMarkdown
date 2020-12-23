@@ -44,6 +44,12 @@ const groupSequenceBy = (textFont) => {
     });
     text += isItalic ? markdown.italicEndTag : "";
     text += isBold ? markdown.boldEndTag : "";
+    text = text.replace(new RegExp(`\\${markdown.boldStartTag}(\\s*)(.+?)(\\s*)\\${markdown.boldEndTag}`, 'gim'), `$1${markdown.boldStartTag}$2${markdown.boldEndTag}$3`);
+    text = text.replace(new RegExp(`\\${markdown.italicStartTag}(\\s*)(.+?)(\\s*)\\${markdown.italicEndTag}`, 'gim'), `$1${markdown.italicStartTag}$2${markdown.italicEndTag}$3`);
+    text = text.replace(new RegExp(`\\${markdown.boldEndTag}(\\s+)\\${markdown.boldStartTag}`, 'gim'), "$1");
+    text = text.replace(new RegExp(`\\${markdown.italicEndTag}(\\s+)\\${markdown.italicStartTag}`, 'gim'), "$1");
+    text = text.replace(new RegExp(`\\${markdown.boldStartTag}(\\s+)\\${markdown.boldEndTag}`, 'gim'), "$1");
+    text = text.replace(new RegExp(`\\${markdown.italicStartTag}(\\s+)\\${markdown.italicEndTag}`, 'gim'), "$1");
     return text;
 };
 const setTextOnUI = (textNode) => {
@@ -80,7 +86,6 @@ const renderSelection = () => {
     }
 };
 figma.ui.onmessage = msg => {
-    console.log("entrou");
     SELECT_MARKDOWN = msg.select;
     renderSelection();
 };
