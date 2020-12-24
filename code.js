@@ -28,21 +28,22 @@ const markText = (textFont) => {
     textFont.forEach(t => {
         const boldMatch = t.fn.match(bold);
         const italicMatch = t.fn.match(italic);
-        if (boldMatch && italicMatch)
+        const isEndOfLine = t.ch.charCodeAt(0) == 10;
+        if (boldMatch && italicMatch && !isEndOfLine)
             text += markdown.iS + markdown.bS + t.ch + markdown.bE + markdown.iE;
-        else if (boldMatch)
+        else if (boldMatch && !isEndOfLine)
             text += markdown.bS + t.ch + markdown.bE;
-        else if (italicMatch)
+        else if (italicMatch && !isEndOfLine)
             text += markdown.iS + t.ch + markdown.iE;
         else
             text += t.ch;
     });
-    text = text.replace(new RegExp(`\\${markdown.iS}(\\s*)\\${markdown.iE}`, 'gim'), "$1");
-    text = text.replace(new RegExp(`\\${markdown.bS}(\\s*)\\${markdown.bE}`, 'gim'), "$1");
-    text = text.replace(new RegExp(`\\${markdown.iE}(\\s*)\\${markdown.iS}`, 'gim'), "$1");
-    text = text.replace(new RegExp(`\\${markdown.bE}(\\s*)\\${markdown.bS}`, 'gim'), "$1");
-    text = text.replace(new RegExp(`\\${markdown.iS}(\\s*)(.+?)(\\s*)\\${markdown.iE}`, 'gim'), `$1${markdown.iS}$2${markdown.iE}$3`);
-    text = text.replace(new RegExp(`\\${markdown.bS}(\\s*)(.+?)(\\s*)\\${markdown.bE}`, 'gim'), `$1${markdown.bS}$2${markdown.bE}$3`);
+    text = text.replace(new RegExp(`\\${markdown.iS}( *)\\${markdown.iE}`, 'gim'), "$1");
+    text = text.replace(new RegExp(`\\${markdown.bS}( *)\\${markdown.bE}`, 'gim'), "$1");
+    text = text.replace(new RegExp(`\\${markdown.iE}( *)\\${markdown.iS}`, 'gim'), "$1");
+    text = text.replace(new RegExp(`\\${markdown.bE}( *)\\${markdown.bS}`, 'gim'), "$1");
+    text = text.replace(new RegExp(`\\${markdown.iS}( *)(.+?)( *)\\${markdown.iE}`, 'gim'), `$1${markdown.iS}$2${markdown.iE}$3`);
+    text = text.replace(new RegExp(`\\${markdown.bS}( *)(.+?)( *)\\${markdown.bE}`, 'gim'), `$1${markdown.bS}$2${markdown.bE}$3`);
     return text;
 };
 const setTextOnUI = (textNode) => {
