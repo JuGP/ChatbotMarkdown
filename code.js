@@ -1,55 +1,46 @@
 figma.showUI(__html__, { width: 400, height: 400 });
-let SELECT_MARKDOWN = "wa";
 const MARKDOWN = {
     "wa": {
-        boldStartTag: "*",
-        boldEndTag: "*",
-        italicStartTag: "_",
-        italicEndTag: "_"
+        bS: "*",
+        bE: "*",
+        iS: "_",
+        iE: "_"
     },
     "bc": {
-        boldStartTag: "&lt;b&gt;",
-        boldEndTag: "&lt;/b&gt;",
-        italicStartTag: "&lt;i&gt;",
-        italicEndTag: "&lt;/i&gt;"
+        bS: "&lt;b&gt;",
+        bE: "&lt;/b&gt;",
+        iS: "&lt;i&gt;",
+        iE: "&lt;/i&gt;"
+    },
+    "var": {
+        bS: "{{bS}}",
+        bE: "{{bE}}",
+        iS: "{{iS}}",
+        iE: "{{iE}}"
     }
 };
-const groupSequenceBy = (textFont) => {
+let SELECT_MARKDOWN = "wa";
+const markText = (textFont) => {
     const bold = new RegExp(".*(bold|black).*", "gi");
     const italic = new RegExp(".*(light|italic).*", "gi");
     const markdown = MARKDOWN[SELECT_MARKDOWN];
-    let isBold = false;
-    let isItalic = false;
     let text = "";
     textFont.forEach(t => {
         const boldMatch = t.fn.match(bold);
         const italicMatch = t.fn.match(italic);
-        if (!isBold && boldMatch) {
-            text += markdown.boldStartTag;
-            isBold = true;
-        }
-        if (!isItalic && italicMatch) {
-            text += markdown.italicStartTag;
-            isItalic = true;
-        }
-        if (isItalic && !italicMatch) {
-            text += markdown.italicEndTag;
-            isItalic = false;
-        }
-        if (isBold && !boldMatch) {
-            text += markdown.boldEndTag;
-            isBold = false;
-        }
-        text += t.ch;
+        if (boldMatch)
+            text += markdown.bS + t.ch + markdown.bE;
+        else if (italicMatch)
+            text += markdown.iS + t.ch + markdown.iE;
+        else
+            text += t.ch;
     });
-    text += isItalic ? markdown.italicEndTag : "";
-    text += isBold ? markdown.boldEndTag : "";
-    text = text.replace(new RegExp(`\\${markdown.boldStartTag}(\\s*)(.+?)(\\s*)\\${markdown.boldEndTag}`, 'gim'), `$1${markdown.boldStartTag}$2${markdown.boldEndTag}$3`);
-    text = text.replace(new RegExp(`\\${markdown.italicStartTag}(\\s*)(.+?)(\\s*)\\${markdown.italicEndTag}`, 'gim'), `$1${markdown.italicStartTag}$2${markdown.italicEndTag}$3`);
-    text = text.replace(new RegExp(`\\${markdown.boldEndTag}(\\s+)\\${markdown.boldStartTag}`, 'gim'), "$1");
-    text = text.replace(new RegExp(`\\${markdown.italicEndTag}(\\s+)\\${markdown.italicStartTag}`, 'gim'), "$1");
-    text = text.replace(new RegExp(`\\${markdown.boldStartTag}(\\s+)\\${markdown.boldEndTag}`, 'gim'), "$1");
-    text = text.replace(new RegExp(`\\${markdown.italicStartTag}(\\s+)\\${markdown.italicEndTag}`, 'gim'), "$1");
+    text = text.replace(new RegExp(`\\${markdown.bS}( *)\\${markdown.bE}`, 'gim'), "$1");
+    text = text.replace(new RegExp(`\\${markdown.iS}( *)\\${markdown.iE}`, 'gim'), "$1");
+    text = text.replace(new RegExp(`\\${markdown.bS}( *)(.+?)( *)\\${markdown.bE}`, 'gim'), `$1${markdown.bS}$2${markdown.bE}$3`);
+    text = text.replace(new RegExp(`\\${markdown.iS}( *)(.+?)( *)\\${markdown.iE}`, 'gim'), `$1${markdown.iS}$2${markdown.iE}$3`);
+    text = text.replace(new RegExp(`\\${markdown.bE}( *)\\${markdown.bS}`, 'gim'), "$1");
+    text = text.replace(new RegExp(`\\${markdown.iE}( *)\\${markdown.iS}`, 'gim'), "$1");
     return text;
 };
 const setTextOnUI = (textNode) => {
@@ -58,9 +49,9 @@ const setTextOnUI = (textNode) => {
     for (let i = 0; i < len; i++) {
         let fn = textNode.getRangeFontName(i, i + 1).style;
         let ch = textNode.characters[i];
-        textFont.push({ "ch": ch, "fn": fn });
+        textFont.push({ ch, fn });
     }
-    const text = groupSequenceBy(textFont);
+    const text = markText(textFont);
     figma.ui.postMessage({ text });
 };
 const renderSelection = () => {
