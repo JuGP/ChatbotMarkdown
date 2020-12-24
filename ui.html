@@ -2,17 +2,37 @@
 
 <head>
   <style>
+    
+
+    button,
     select,
-    pre {
-      outline: none;
-      background-color: whitesmoke;
-      margin: 5% 2%;
-      padding: 2% 3%;
+    textarea {
       color: black;
       font-size: 0.85em;
       font-family: 'Roboto', sans-serif;
-      border: #787878 1px solid;
+      margin: 5% 2%;
+      padding: 2% 3%;
+      border:darkgray 1px solid;
+    }
+
+    select{
+      background-color: whitesmoke;
+    }
+
+    textarea {
       white-space: pre-wrap;
+      border-style: dashed;
+      display: block;
+      width: 96%;
+      height: 45%;
+    }
+
+    button{
+      background-color: #1E90FF;
+      color: white;
+      position: absolute;
+      right: 2%;
+      bottom: 5%;
     }
   </style>
 </head>
@@ -24,15 +44,22 @@
     <option value="var">Variable</option>
   </select>
 
-  <pre id="text"></pre>
+  <textarea id="text"></textarea>
+
+  <button id="btn">Copiar</button>
 
   <script>
     document.getElementById("select").onchange = (event) => {
       parent.postMessage({ pluginMessage: { select: event.target.value } }, '*');
     }
 
+    document.getElementById("btn").onclick = (event) => {
+      document.getElementById("text").select();
+      document.execCommand('copy');
+    }
+
     onmessage = (msg) => {
-      document.getElementById("text").innerHTML = msg.data.pluginMessage.text;
+      document.getElementById("text").value = msg.data.pluginMessage.text;
     };
   </script>
 

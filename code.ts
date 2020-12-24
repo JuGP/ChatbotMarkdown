@@ -22,10 +22,10 @@ const MARKDOWN: {[id: string] : TextMarkdown} = {
     iE: "_"
   },
   "bc": {
-    bS: "&lt;b&gt;",
-    bE: "&lt;/b&gt;",
-    iS: "&lt;i&gt;",
-    iE: "&lt;/i&gt;"
+    bS: "<b>",
+    bE: "</b>",
+    iS: "<i>",
+    iE: "</i>"
   },
   "var": {
     bS: "{{bS}}",
