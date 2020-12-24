@@ -14,7 +14,7 @@ interface TextMarkdown {
 }
 
 
-const MARKDOWN: {[id: string] : TextMarkdown} = {
+const MARKDOWN: { [id: string]: TextMarkdown } = {
   "wa": {
     bS: "*",
     bE: "*",
@@ -54,17 +54,17 @@ const markText = (textFont: TextFont[]) => {
     else text += t.ch;
   })
 
-  
+
   text = text.replace(new RegExp(`\\${markdown.iS}(\\s*)\\${markdown.iE}`, 'gim'), "$1");
   text = text.replace(new RegExp(`\\${markdown.bS}(\\s*)\\${markdown.bE}`, 'gim'), "$1");
-  
+
   text = text.replace(new RegExp(`\\${markdown.iE}(\\s*)\\${markdown.iS}`, 'gim'), "$1");
   text = text.replace(new RegExp(`\\${markdown.bE}(\\s*)\\${markdown.bS}`, 'gim'), "$1");
 
   text = text.replace(new RegExp(`\\${markdown.iS}(\\s*)(.+?)(\\s*)\\${markdown.iE}`, 'gim'), `$1${markdown.iS}$2${markdown.iE}$3`);
   text = text.replace(new RegExp(`\\${markdown.bS}(\\s*)(.+?)(\\s*)\\${markdown.bE}`, 'gim'), `$1${markdown.bS}$2${markdown.bE}$3`);
 
-  
+
   return text;
 }
 
