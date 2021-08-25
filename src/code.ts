@@ -1,5 +1,3 @@
-/// <reference path="../node_modules/@figma/plugin-typings/index.d.ts" />
-
 import { MARKDOW } from "./data";
 
 let SELECT_MARKDOWN = "";
