@@ -1,7 +1,7 @@
 {
   "name": "Chatbot Markdown",
-  "id": "917124929990418850",
+  "id": "954531586394206516",
   "api": "1.0.0",
-  "main": "code.js",
-  "ui": "ui.html"
+  "main": "dist/code.js",
+  "ui": "dist/ui.html"
 }
