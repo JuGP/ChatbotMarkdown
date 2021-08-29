@@ -14,7 +14,7 @@ Currently this plugin allows *three types of configurations*:
 &ensp;&ensp;👉 Italic: \<i>some text\</i> \
 &ensp;&ensp;👉 Bold: \<b>some text\</b>
 
-💬 **Variable** \
+💬 **Customized** \
 &ensp;&ensp;👉 Italic: {{iS}}some text{{iE}} \
 &ensp;&ensp;👉 Bold: {{bS}}some text{{bE}}
 
@@ -58,8 +58,10 @@ How it works
 Each figma font/typefaces has a set of weight that can be apply, such as regular, bold, italic, thin, black, etc. \
 Some typefaces have no style option, and sometimes only offer a regular weight. \
 In this plugin, the following types of weight and their variations were considered: \
+👉 Thin (as Italic) \
 👉 Light (as Italic) \
 👉 Italic (as Italic) \
 👉 Regular \
+👉 Medium (as Bold) \
 👉 Bold (as Bold) \
 👉 Black (as Bold)
