@@ -1,7 +1,7 @@
 import { MARKDOW } from "./data";
 
 let SELECT_MARKDOWN = "";
-let LAST_SELECT_TEXT: TextNode;
+let LAST_SELECT_TEXT: TextNode = undefined;
 
 figma.showUI(__html__, { width: 400, height: 400 });
 
@@ -23,25 +23,26 @@ function render() {
             case "GROUP":
                 let groupNode = <GroupNode>currentNode;
                 textNode = <TextNode>groupNode.findOne(node => node.type === "TEXT");
+                LAST_SELECT_TEXT = textNode;
                 break;
             case "INSTANCE":
                 let instanceNode = <InstanceNode>currentNode;
                 textNode = <TextNode>instanceNode.findOne(node => node.type === "TEXT");
+                LAST_SELECT_TEXT = textNode;
                 break;
             case "TEXT":
-            default:
                 textNode = <TextNode>currentNode;
+                LAST_SELECT_TEXT = textNode;
                 break;
         }
-        LAST_SELECT_TEXT = textNode;
     }
     let text = LAST_SELECT_TEXT? markText(LAST_SELECT_TEXT): "";
     figma.ui.postMessage({ text });
 }
 
 function markText(textNode: TextNode): string {
-    const bold = new RegExp(".*(bold|black).*", "gi");
-    const italic = new RegExp(".*(light|italic).*", "gi");
+    const bold = new RegExp(".*(medium|bold|black).*", "gi");
+    const italic = new RegExp(".*(thin|light|italic).*", "gi");
     const markdown = MARKDOW[SELECT_MARKDOWN];
 
     const len = textNode.characters.length;

@@ -14,7 +14,7 @@ export const MARKDOW = {
         "iE": "_"
     },
     "bc": {
-        "option": "BlipChat",
+        "option": "HTML",
         "bS": "<b>",
         "bE": "</b>",
         "iS": "<i>",
